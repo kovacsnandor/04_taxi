@@ -16,7 +16,7 @@
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
           <li class="nav-item">
-            <router-link class="nav-link active" aria-current="page" to="/">Home</router-link>
+            <router-link class="nav-link" aria-current="page" to="/">Home</router-link>
           </li>
           <li class="nav-item">
             <router-link class="nav-link" to="/about">About</router-link>
@@ -42,10 +42,10 @@
             <router-link class="nav-link disabled" to="/count1">Counter1</router-link>
           </li>
           <li class="nav-item">
-            <router-link class="nav-link active" to="/count2">Counter2</router-link>
+            <router-link class="nav-link" to="/count2">Counter2</router-link>
           </li>
           <li class="nav-item">
-            <router-link class="nav-link active" to="/login">Login</router-link>
+            <router-link class="nav-link" to="/login">Login</router-link>
           </li>
 
         </ul>
@@ -68,4 +68,7 @@
 </script>
 
 <style>
+.router-link-active {
+  color: red !important;
+}
 </style>
