@@ -17,16 +17,18 @@ export const useLoginStore = defineStore({
     loginErrorMessage: null,
   }),
   actions: {
-    increaseCount() {
-      this.count++;
-    },
-    decreaseCount() {
-      this.count--;
-    },
-  },
-  getters: {
-    oddOrEven() {
-      return this.count % 2 === 0 ? "even" : "odd";
+    clearLogin() {
+      this.userName= null;
+      this.password= null;
+      this.accessToken= null;
+      this.refreshToken= null;
+      this.userId= 0;
+      this.number= 0;
+      this.loginTime= 15;
+      this.timerId= null;
+      this.leftTime= null;
+      this.accessTime= 0;
+      this.loginSuccess = 0;
     },
   },
 });
