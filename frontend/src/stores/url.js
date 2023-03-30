@@ -8,13 +8,13 @@ export const useUrlStore = defineStore({
   }),
   getters: {
     urlLogin() {
-      return `${this.urlData}/login`;
+      return `${this.urlAuth}/login`;
     },
     urlLogout() {
-      return `${this.urlData}/logout`;
+      return `${this.urlAuth}/logout`;
     },
     urlToken() {
-      return `${this.urlData}/token`;
+      return `${this.urlAuth}/token`;
     },
   },
 });

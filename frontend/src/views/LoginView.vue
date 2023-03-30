@@ -40,8 +40,36 @@ export default {
     };
   },
   methods:{
-    login(){
-      storeLogin.loginSuccess = 1;
+    async login(){
+      const url=storeUrl.urlLogin
+      const user = {
+        userName: storeLogin.userName,
+        password: storeLogin.password
+      }
+      const body = JSON.stringify(user);
+      const config = {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: body,
+      };
+      const response = await fetch(url,config);
+      const data = await response.json();
+      if (data.success) {
+          //sikeres bejelentkezés
+          this.storeLogin.loginSuccess = data.success;
+          this.storeLogin.accessToken = data.data.accessToken;
+          this.storeLogin.refreshToken = data.data.refreshToken;
+          this.storeLogin.userId = data.data.userId;
+          this.storeLogin.number = data.data.number;
+          this.storeLogin.accessTime = parseInt(data.data.accessTime);
+      } else{
+        //sikertelen bejelentkezés
+
+      }
+
     },
   }
 };
