@@ -42,6 +42,7 @@ export default {
       const response = await fetch(url, config);
       const data = await response.json();
       this.listWithTrips = data.data;
+      console.log(this.listWithTrips);
     },
   }
 }
