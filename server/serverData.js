@@ -260,6 +260,51 @@ app.get("/cars", (req, res) => {
   });
 });
 
+app.get("/carsWithDrivers", (req, res) => {
+  let sql = `select c.id, c.name, c.licenceNumber, c.hourlyRate, c.outOfTraffic, c.driverId, d.driverName from cars c
+    inner join drivers d on d.id = c.driverId`;
+
+  pool.getConnection(function (error, connection) {
+    if (error) {
+      sendingGetError(res, "Server connecting error!");
+      return;
+    }
+    connection.query(sql, async function (error, results, fields) {
+      if (error) {
+        message = "Cars sql error";
+        sendingGetError(res, message);
+        return;
+      }
+      sendingGet(res, null, results);
+    });
+    connection.release();
+  });
+});
+
+app.get("/driversAbc", (req, res) => {
+  let sql = `SELECT id, driverName FROM drivers
+  ORDER BY driverName`;
+
+  pool.getConnection(function (error, connection) {
+    if (error) {
+      sendingGetError(res, "Server connecting error!");
+      return;
+    }
+    connection.query(sql, async function (error, results, fields) {
+      if (error) {
+        message = "Cars sql error";
+        sendingGetError(res, message);
+        return;
+      }
+      sendingGet(res, null, results);
+    });
+    connection.release();
+  });
+});
+
+
+
+
 //Cars a Trip-jeivel
 app.get("/carsWithTrips", (req, res) => {
   let sql = `SELECT * FROM cars`;
@@ -422,12 +467,14 @@ app.post("/cars", (req, res) => {
     name: sanitizeHtml(req.body.name),
     licenceNumber: sanitizeHtml(req.body.licenceNumber),
     hourlyRate: +sanitizeHtml(req.body.hourlyRate),
+    outOfTraffic: +sanitizeHtml(req.body.outOfTraffic),
+    driverId: +sanitizeHtml(req.body.driverId),
   };
   let sql = `
     INSERT cars 
-    (name, licenceNumber, hourlyRate)
+    (name, licenceNumber, hourlyRate, outOfTraffic, driverId)
     VALUES
-    (?, ?, ?)
+    (?, ?, ?, ?, ?)
     `;
   pool.getConnection(function (error, connection) {
     if (error) {
@@ -436,7 +483,7 @@ app.post("/cars", (req, res) => {
     }
     connection.query(
       sql,
-      [newR.name, newR.licenceNumber, newR.hourlyRate],
+      [newR.name, newR.licenceNumber, newR.hourlyRate, newR.outOfTraffic, newR.driverId],
       function (error, result, fields) {
         sendingPost(res, error, result, newR);
       }

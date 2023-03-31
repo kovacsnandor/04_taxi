@@ -112,7 +112,9 @@ Content-Type: application/json
 {
     "name": "Mercedes",
     "licenceNumber": "MM-111",
-    "hourlyRate": 2500
+    "hourlyRate": 2500,
+    "outOfTraffic": 0,
+    "driverId": 1
 }
 
 ### post car XSS teszt
@@ -132,7 +134,9 @@ Content-Type: application/json
 {
     "name": "Mercedes3",
     "licenceNumber": "MM-222",
-    "hourlyRate": 2600
+    "hourlyRate": 2600,
+    "outOfTraffic": 0,
+    "driverId": 1
 }
 
 ### put car by id XSS teszt
@@ -174,3 +178,10 @@ Content-Type: application/json
     "date": "2022.10.13 01:35:00",
     "carId": 2
 }
+
+
+### get cars
+get http://localhost:3000/carsWithDrivers
+
+### get driversAbc
+get http://localhost:3000/driversAbc
