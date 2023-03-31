@@ -498,12 +498,17 @@ app.put("/cars/:id", (req, res) => {
     name: sanitizeHtml(req.body.name),
     licenceNumber: sanitizeHtml(req.body.licenceNumber),
     hourlyRate: +sanitizeHtml(req.body.hourlyRate),
+    outOfTraffic: +sanitizeHtml(req.body.outOfTraffic),
+    driverId: +sanitizeHtml(req.body.driverId),
+
   };
   let sql = `
     UPDATE cars SET
     name = ?,
     licenceNumber = ?,
-    hourlyRate = ?
+    hourlyRate = ?,
+    outOfTraffic = ?,
+    driverId = ?
     WHERE id = ?
       `;
 
@@ -514,7 +519,7 @@ app.put("/cars/:id", (req, res) => {
     }
     connection.query(
       sql,
-      [newR.name, newR.licenceNumber, newR.hourlyRate, id],
+      [newR.name, newR.licenceNumber, newR.hourlyRate, newR.outOfTraffic, newR.driverId, id],
       function (error, result, fields) {
         sendingPut(res, error, result, id, newR);
       }
