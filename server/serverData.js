@@ -260,6 +260,7 @@ app.get("/cars", (req, res) => {
   });
 });
 
+//új
 app.get("/carsWithDrivers", (req, res) => {
   let sql = `select c.id, c.name, c.licenceNumber, c.hourlyRate, c.outOfTraffic, c.driverId, d.driverName from cars c
     inner join drivers d on d.id = c.driverId`;
@@ -281,6 +282,7 @@ app.get("/carsWithDrivers", (req, res) => {
   });
 });
 
+//új
 app.get("/driversAbc", (req, res) => {
   let sql = `SELECT id, driverName FROM drivers
   ORDER BY driverName`;
@@ -301,9 +303,6 @@ app.get("/driversAbc", (req, res) => {
     connection.release();
   });
 });
-
-
-
 
 //Cars a Trip-jeivel
 app.get("/carsWithTrips", (req, res) => {
@@ -462,6 +461,7 @@ app.delete("/cars/:id", (req, res) => {
   });
 });
 
+//módosítva
 app.post("/cars", (req, res) => {
   const newR = {
     name: sanitizeHtml(req.body.name),
@@ -492,6 +492,7 @@ app.post("/cars", (req, res) => {
   });
 });
 
+//módosítva
 app.put("/cars/:id", (req, res) => {
   const id = req.params.id;
   const newR = {
