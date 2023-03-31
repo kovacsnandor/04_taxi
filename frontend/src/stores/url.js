@@ -16,5 +16,21 @@ export const useUrlStore = defineStore({
     urlToken() {
       return `${this.urlAuth}/token`;
     },
+    urlCars(){
+      return `${this.urlData}/cars`
+    },
+    urlCarsWithTrips(){
+      return `${this.urlData}/carsWithTrips`
+    },
+    urlCarsTrips(){
+      return `${this.urlData}/carsTrips`
+    },
+    urlCarsWithDrivers(){
+      return `${this.urlData}/carsWithDrivers`
+    },
+    urlDriversAbc(){
+      return `${this.urlData}/driversAbc`
+    }
   },
+
 });
