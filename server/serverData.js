@@ -241,7 +241,10 @@ function getTrips(res, carId) {
 
 //Csak a cars tábla
 app.get("/cars", (req, res) => {
-  let sql = `SELECT * FROM cars`;
+  let sql = `SELECT id, name, licenceNumber, hourlyRate, 
+    IF(outOfTraffic, 'true', 'false') outOfTraffic, 
+    driverId
+    FROM cars`;
 
   pool.getConnection(function (error, connection) {
     if (error) {
@@ -306,7 +309,10 @@ app.get("/driversAbc", (req, res) => {
 
 //Cars a Trip-jeivel
 app.get("/carsWithTrips", (req, res) => {
-  let sql = `SELECT * FROM cars`;
+  let sql = `SELECT id, name, licenceNumber, hourlyRate, 
+    IF(outOfTraffic, 'true', 'false') outOfTraffic, 
+    driverId
+    FROM cars`;
 
   pool.getConnection(function (error, connection) {
     if (error) {
@@ -357,7 +363,10 @@ app.get("/carsTrips", (req, res) => {
 app.get("/cars/:id", (req, res) => {
   const id = req.params.id;
   let sql = `
-    SELECT * FROM cars
+    SELECT id, name, licenceNumber, hourlyRate, 
+    IF(outOfTraffic, 'true', 'false') outOfTraffic, 
+    driverId
+    FROM cars
     WHERE id = ?`;
 
   pool.getConnection(function (error, connection) {
@@ -386,7 +395,9 @@ app.get("/cars/:id", (req, res) => {
 app.get("/carsWithTrips/:id", (req, res) => {
   const id = req.params.id;
   let sql = `
-    SELECT * FROM cars
+    SELECT id, name, licenceNumber, hourlyRate, 
+    IF(outOfTraffic, 'true', 'false'), 
+    driverId FROM cars
     WHERE id = ?`;
 
   pool.getConnection(function (error, connection) {
@@ -466,9 +477,9 @@ app.post("/cars", (req, res) => {
   const newR = {
     name: sanitizeHtml(req.body.name),
     licenceNumber: sanitizeHtml(req.body.licenceNumber),
-    hourlyRate: +sanitizeHtml(req.body.hourlyRate),
-    outOfTraffic: +sanitizeHtml(req.body.outOfTraffic),
-    driverId: +sanitizeHtml(req.body.driverId),
+    hourlyRate: req.body.hourlyRate,
+    outOfTraffic: req.body.outOfTraffic,
+    driverId: req.body.driverId,
   };
   let sql = `
     INSERT cars 
@@ -498,9 +509,9 @@ app.put("/cars/:id", (req, res) => {
   const newR = {
     name: sanitizeHtml(req.body.name),
     licenceNumber: sanitizeHtml(req.body.licenceNumber),
-    hourlyRate: +sanitizeHtml(req.body.hourlyRate),
-    outOfTraffic: +sanitizeHtml(req.body.outOfTraffic),
-    driverId: +sanitizeHtml(req.body.driverId),
+    hourlyRate: req.body.hourlyRate,
+    outOfTraffic: req.body.outOfTraffic,
+    driverId: req.body.driverId,
 
   };
   let sql = `

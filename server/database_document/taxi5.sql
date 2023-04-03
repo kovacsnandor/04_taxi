@@ -81,7 +81,7 @@ select randomInteger(1,3);
 select randomRendszam('Mercedesz');
 select randomAuto();
 
-CALL tesztAdatokAutomata(10, '2022.10.13 12:00:00', 2, 5);
+CALL tesztAdatgeneratorDinamikus(10, '2022.10.13 12:00:00', 2, 5);
 
 
 # -------------------------------------
@@ -129,10 +129,12 @@ INSERT cars
 
 # car módosítás
 UPDATE cars SET
-  name = 'Mercedes',
-  licenceNumber = 'MM-111',
-  hourlyRate = 2200
-  WHERE id = 4;
+  name = 'Toyota',
+  licenceNumber = 'TT-111',
+  hourlyRate = 2658,
+  outOfTraffic = true,
+  driverId = 10
+  WHERE id = 10;
 
 # adott kocsi trips-jei
 SELECT id, numberOfMinits, DATE_FORMAT(date, '%Y.%m.%d %h:%i:%s') date from trips
@@ -161,3 +163,10 @@ select count(*) countUserEmail from users where userName = 'h'
 UNION all
   select count(*) countEmail from users where email = 'feher.h@gmail.com'
 ;
+
+
+# get cars
+  SELECT id, name, licenceNumber, hourlyRate, 
+    IF(outOfTraffic, 'true', 'false') outOfTraffic, 
+    driverId 
+  from cars;
