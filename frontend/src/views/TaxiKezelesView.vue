@@ -9,7 +9,12 @@
         <tr>
           <th>
             <!-- post -->
-            <button type="button btn-sm" class="btn btn-outline-success btn-sm">
+            <button
+              type="button btn-sm"
+              class="btn btn-outline-success btn-sm"
+              @click="onClickNew()"
+              data-bs-target="#carModal"
+            >
               Új taxi
             </button>
           </th>
@@ -24,11 +29,19 @@
         <tr v-for="(car, index) in carsWithDrivers" :key="`car${index}`">
           <td>
             <!-- törlés delete -->
-            <button type="button" class="btn btn-outline-danger btn-sm">
+            <button type="button" 
+            class="btn btn-outline-danger btn-sm"
+            @click="onClickDelete()"
+            >
               <i class="bi bi-trash3-fill"></i>
             </button>
             <!-- put -->
-            <button type="button" class="btn btn-outline-primary btn-sm ms-2">
+            <button
+              type="button"
+              class="btn btn-outline-primary btn-sm ms-2"
+              @click="onClickEdit()"
+              data-bs-target="#carModal"
+            >
               <i class="bi bi-pencil-fill"></i>
             </button>
           </td>
@@ -51,8 +64,48 @@
         </tr>
       </tbody>
     </table>
-
     <!--#endregion táblázat -->
+
+    <!--#region Modal  -->
+    <div
+      class="modal fade"
+      id="carModal"
+      tabindex="-1"
+      aria-labelledby="exampleModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="exampleModalLabel">
+              {{ stateTitle }}
+            </h1>
+            <!-- jobb fölső x -->
+            <button
+              type="button"
+              class="btn-close"
+              @click="onClickCancel()"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">...</div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              @click="onClickCancel()"
+            >
+              Close
+            </button>
+            <button type="button" 
+            class="btn btn-primary"
+            @click="onClickCancel()"
+            >Save changes</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--#endregion Modal  -->
   </div>
 </template>
 
@@ -87,7 +140,7 @@ export default {
       storeLogin,
       carsWithDrivers: [],
       editableCar: new Car(),
-      modal: null,
+      carModal: null,
       form: null,
       state: "view",
       currentId: null,
@@ -96,6 +149,9 @@ export default {
   },
   mounted() {
     this.getCarsWithDrivers();
+    this.carModal = new bootstrap.Modal(document.getElementById("carModal"), {
+      keyboard: false,
+    });
   },
   methods: {
     async getCarsWithDrivers() {
@@ -110,7 +166,31 @@ export default {
       const data = await response.json();
       this.carsWithDrivers = data.data;
     },
+    onClickNew(){
+      this.state="new"
+      this.carModal.show()
+    },
+    onClickEdit(){
+      this.state="edit"
+      this.carModal.show()
+    },
+    onClickDelete(){
+      this.state="delete"
+      this.carModal.show()
+    },
+    onClickCancel(){
+      this.carModal.hide()
+    }
   },
+  computed:{
+    stateTitle(){
+      if (this.state==="new") {
+        return "Új autó bevitele";
+      } else if(this.state === "edit") {
+        return "Autó módosítás"
+      }
+    }
+  }
 };
 </script>
 
