@@ -19,10 +19,9 @@
           <th>Sofőr</th>
           <th>Forgamon kívül</th>
         </tr>
-
       </thead>
       <tbody>
-        <tr>
+        <tr v-for="(car, index) in carsWithDrivers" :key="`car${index}`">
           <td>
             <!-- törlés delete -->
             <button type="button" class="btn btn-outline-danger btn-sm">
@@ -32,13 +31,23 @@
             <button type="button" class="btn btn-outline-primary btn-sm ms-2">
               <i class="bi bi-pencil-fill"></i>
             </button>
-
           </td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
+          <td>{{ car.name }}</td>
+          <td>{{ car.licenceNumber }}</td>
+          <td>{{ car.hourlyRate }}</td>
+          <td>{{ car.driverName }}</td>
+          <td>
+            <div class="form-check">
+              <input
+                class="form-check-input"
+                type="checkbox"
+                value=""
+                :id="`traffic${index}`"
+                v-model="car.outOfTraffic"
+                disabled
+              />
+            </div>
+          </td>
         </tr>
       </tbody>
     </table>
@@ -85,11 +94,11 @@ export default {
       driversAbc: [],
     };
   },
-  mounted(){
-    this.getCarsWithDrivers()
+  mounted() {
+    this.getCarsWithDrivers();
   },
   methods: {
-    async getCarsWithDrivers(){
+    async getCarsWithDrivers() {
       let url = this.storeUrl.urlCarsWithDrivers;
       const config = {
         method: "GET",
@@ -100,9 +109,9 @@ export default {
       const response = await fetch(url, config);
       const data = await response.json();
       this.carsWithDrivers = data.data;
-    }
-  }
-}
+    },
+  },
+};
 </script>
 
 
