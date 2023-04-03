@@ -265,7 +265,9 @@ app.get("/cars", (req, res) => {
 
 //új
 app.get("/carsWithDrivers", (req, res) => {
-  let sql = `select c.id, c.name, c.licenceNumber, c.hourlyRate, c.outOfTraffic, c.driverId, d.driverName from cars c
+  let sql = `select c.id, c.name, c.licenceNumber, c.hourlyRate, 
+  IF(c.outOfTraffic, 'true', 'false') outOfTraffic, 
+  c.driverId, d.driverName from cars c
     inner join drivers d on d.id = c.driverId`;
 
   pool.getConnection(function (error, connection) {
