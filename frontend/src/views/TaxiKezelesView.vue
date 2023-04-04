@@ -122,18 +122,28 @@
                 />
                 <div class="invalid-feedback">Az óradíj kitöltése kötelező</div>
               </div>
-              <!-- outOfTraffic -->
-              <div class="col-12">
-                <div class="form-check">
-                  <input
-                    class="form-check-input"
-                    type="checkbox"
-                    value=""
-                    id="outOfTraffic"
-                  />
-                  <label class="form-check-label" for="outOfTraffic">
-                    Forgalmon kívül
-                  </label>
+              <div class="d-flex align-items-center">
+                <!-- outOfTraffic -->
+                <div class="col-4">
+                  <div class="form-check">
+                    <input
+                      class="form-check-input"
+                      type="checkbox"
+                      value=""
+                      id="outOfTraffic"
+                    />
+                    <label class="form-check-label" for="outOfTraffic">
+                      Forgalmon kívül
+                    </label>
+                  </div>
+                </div>
+                <!-- drivers  -->
+                <div class="col-md-8 d-flex align-items-center">
+                  <label for="driverId" class="form-label m-0">Sofőr:</label>
+                  <select class="form-select ms-2" id="driverId">
+                    <option value="">név1</option>
+                    <option>név2</option>
+                  </select>
                 </div>
               </div>
             </form>
