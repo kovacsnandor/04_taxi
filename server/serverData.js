@@ -268,29 +268,7 @@ app.get("/carsWithDrivers", (req, res) => {
   let sql = `select c.id, c.name, c.licenceNumber, c.hourlyRate, 
   IF(c.outOfTraffic, 'true', 'false') outOfTraffic, 
   c.driverId, d.driverName from cars c
-    inner join drivers d on d.id = c.driverId`;
-
-  pool.getConnection(function (error, connection) {
-    if (error) {
-      sendingGetError(res, "Server connecting error!");
-      return;
-    }
-    connection.query(sql, async function (error, results, fields) {
-      if (error) {
-        message = "Cars sql error";
-        sendingGetError(res, message);
-        return;
-      }
-      sendingGet(res, null, results);
-    });
-    connection.release();
-  });
-});
-
-//új
-app.get("/driversAbc", (req, res) => {
-  let sql = `SELECT id, driverName FROM drivers
-  ORDER BY driverName`;
+    left join drivers d on d.id = c.driverId`;
 
   pool.getConnection(function (error, connection) {
     if (error) {
@@ -542,6 +520,54 @@ app.put("/cars/:id", (req, res) => {
   });
 });
 //#endregion cars
+
+//#region drivers
+//új
+app.get("/driversAbc", (req, res) => {
+  let sql = `SELECT id, driverName FROM drivers
+  ORDER BY driverName`;
+
+  pool.getConnection(function (error, connection) {
+    if (error) {
+      sendingGetError(res, "Server connecting error!");
+      return;
+    }
+    connection.query(sql, async function (error, results, fields) {
+      if (error) {
+        message = "Cars sql error";
+        sendingGetError(res, message);
+        return;
+      }
+      sendingGet(res, null, results);
+    });
+    connection.release();
+  });
+});
+
+app.get("/driversFreAbc", (req, res) => {
+  let sql = `SELECT d.id, d.driverName FROM drivers d
+  left join cars c on d.id = c.driverId
+  WHERE c.driverId is NULL
+  ORDER BY driverName`;
+
+  pool.getConnection(function (error, connection) {
+    if (error) {
+      sendingGetError(res, "Server connecting error!");
+      return;
+    }
+    connection.query(sql, async function (error, results, fields) {
+      if (error) {
+        message = "Cars sql error";
+        sendingGetError(res, message);
+        return;
+      }
+      sendingGet(res, null, results);
+    });
+    connection.release();
+  });
+});
+
+//#endregion drivers
 
 //#region trips ---
 app.get("/tripsByCarId/:id", (req, res) => {

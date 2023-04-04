@@ -128,7 +128,7 @@ Content-Type: application/json
 }
 
 ### put car by id
-put http://localhost:3000/cars/611
+put http://localhost:3000/cars/1
 Content-Type: application/json
 
 {
@@ -136,7 +136,7 @@ Content-Type: application/json
     "licenceNumber": "MM-111",
     "hourlyRate": 2500,
     "outOfTraffic": false,
-    "driverId": 1
+    "driverId": null
 }
 
 ### put car by id XSS teszt
@@ -185,3 +185,7 @@ get http://localhost:3000/carsWithDrivers
 
 ### get driversAbc
 get http://localhost:3000/driversAbc
+
+### get driversFreAbc Szabad sofőrök nincs kocsijuk 
+get http://localhost:3000/driversFreAbc
+

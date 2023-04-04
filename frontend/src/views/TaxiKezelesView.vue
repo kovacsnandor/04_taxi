@@ -160,6 +160,7 @@
                     v-model="editableCar.driverId"
                     required
                   >
+                    <option :value="null">Nincs sofőr</option>
                     <option
                       v-for="(driver, index) in driversAbc"
                       :key="`driver${index}`"

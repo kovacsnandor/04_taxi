@@ -30,6 +30,9 @@ export const useUrlStore = defineStore({
     },
     urlDriversAbc(){
       return `${this.urlData}/driversAbc`
+    },
+    urlDriversFreAbc(){
+      return `${this.urlData}/driversFreAbc`
     }
   },
 
