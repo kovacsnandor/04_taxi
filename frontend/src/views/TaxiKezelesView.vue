@@ -158,6 +158,7 @@
                     class="form-select ms-2"
                     id="driverId"
                     v-model="editableCar.driverId"
+                    required
                   >
                     <option
                       v-for="(driver, index) in driversAbc"
@@ -239,6 +240,11 @@ export default {
     this.carModal = new bootstrap.Modal(document.getElementById("carModal"), {
       keyboard: false,
     });
+    
+    //A validációhoz kell
+    this.form = document.querySelector(".needs-validation");
+
+
   },
   methods: {
     async getCarsWithDrivers() {
@@ -253,7 +259,7 @@ export default {
       const data = await response.json();
       this.carsWithDrivers = data.data;
       this.state = "view";
-      this.editableCar = new Car();
+      
     },
     async getCarById(id) {
       let url = `${this.storeUrl.urlCars}/${id}`;
@@ -325,16 +331,20 @@ export default {
       this.state = "delete";
     },
     onClickCancel() {
+      this.editableCar = new Car();
       this.carModal.hide();
     },
     onClickSave() {
-      if (this.state == "new") {
-        this.postCar();
-      } else if (this.state == "edit") {
-        this.putCar();
+      this.form.classList.add("was-validated");
+      if (this.form.checkValidity()) {
+        if (this.state == "new") {
+          this.postCar();
+        } else if (this.state == "edit") {
+          this.putCar();
+        }
+        this.carModal.hide();
       }
       
-      this.carModal.hide();
     },
     onClickRow(id) {
       this.currentId = id;
