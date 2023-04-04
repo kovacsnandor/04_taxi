@@ -260,6 +260,7 @@ export default {
       const data = await response.json();
       this.carsWithDrivers = data.data;
       this.state = "view";
+      this.getDriversAbc();
       
     },
     async getCarById(id) {
@@ -276,7 +277,7 @@ export default {
     },
 
     async getDriversAbc() {
-      let url = this.storeUrl.urlDriversAbc;
+      let url = this.storeUrl.urlDriversFreAbc;
       const config = {
         method: "GET",
         headers: {
