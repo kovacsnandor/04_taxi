@@ -170,3 +170,9 @@ UNION all
     IF(outOfTraffic, 'true', 'false') outOfTraffic, 
     driverId 
   from cars;
+
+# carsWithDrivers
+select c.id, c.name, c.licenceNumber, c.hourlyRate, 
+  IF(c.outOfTraffic, 'true', 'false') outOfTraffic,
+  c.driverId, d.driverName from cars c
+  inner join drivers d on d.id = c.driverId;

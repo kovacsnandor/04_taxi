@@ -29,9 +29,10 @@
         <tr v-for="(car, index) in carsWithDrivers" :key="`car${index}`">
           <td>
             <!-- törlés delete -->
-            <button type="button" 
-            class="btn btn-outline-danger btn-sm"
-            @click="onClickDelete()"
+            <button
+              type="button"
+              class="btn btn-outline-danger btn-sm"
+              @click="onClickDelete()"
             >
               <i class="bi bi-trash3-fill"></i>
             </button>
@@ -88,7 +89,56 @@
               aria-label="Close"
             ></button>
           </div>
-          <div class="modal-body">...</div>
+          <!-- Content -->
+          <div class="modal-body">
+            <form class="row g-3 needs-validation" novalidate>
+              <!-- name -->
+              <div class="mb-3 col-md-12">
+                <label for="name" class="form-label">Autó neve</label>
+                <input type="text" class="form-control" id="name" required />
+                <div class="invalid-feedback">Az autó kitöltése kötelező</div>
+              </div>
+              <!-- licenceNumber -->
+              <div class="mb-3 col-md-6">
+                <label for="licenceNumber" class="form-label">Rendszám</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="licenceNumber"
+                  required
+                />
+                <div class="invalid-feedback">
+                  Az rendszám kitöltése kötelező
+                </div>
+              </div>
+              <!-- hourlyRate -->
+              <div class="mb-3 col-md-6">
+                <label for="hourlyRate" class="form-label">Óradíj</label>
+                <input
+                  type="number"
+                  class="form-control"
+                  id="hourlyRate"
+                  required
+                />
+                <div class="invalid-feedback">Az óradíj kitöltése kötelező</div>
+              </div>
+              <!-- outOfTraffic -->
+              <div class="col-12">
+                <div class="form-check">
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    value=""
+                    id="outOfTraffic"
+                  />
+                  <label class="form-check-label" for="outOfTraffic">
+                    Forgalmon kívül
+                  </label>
+                </div>
+              </div>
+            </form>
+          </div>
+
           <div class="modal-footer">
             <button
               type="button"
@@ -97,10 +147,13 @@
             >
               Close
             </button>
-            <button type="button" 
-            class="btn btn-primary"
-            @click="onClickCancel()"
-            >Save changes</button>
+            <button
+              type="button"
+              class="btn btn-primary"
+              @click="onClickCancel()"
+            >
+              Save changes
+            </button>
           </div>
         </div>
       </div>
@@ -165,32 +218,32 @@ export default {
       const response = await fetch(url, config);
       const data = await response.json();
       this.carsWithDrivers = data.data;
+      this.state = "view";
     },
-    onClickNew(){
-      this.state="new"
-      this.carModal.show()
+    onClickNew() {
+      this.state = "new";
+      this.carModal.show();
     },
-    onClickEdit(){
-      this.state="edit"
-      this.carModal.show()
+    onClickEdit() {
+      this.state = "edit";
+      this.carModal.show();
     },
-    onClickDelete(){
-      this.state="delete"
-      this.carModal.show()
+    onClickDelete() {
+      this.state = "delete";
     },
-    onClickCancel(){
-      this.carModal.hide()
-    }
+    onClickCancel() {
+      this.carModal.hide();
+    },
   },
-  computed:{
-    stateTitle(){
-      if (this.state==="new") {
+  computed: {
+    stateTitle() {
+      if (this.state === "new") {
         return "Új autó bevitele";
-      } else if(this.state === "edit") {
-        return "Autó módosítás"
+      } else if (this.state === "edit") {
+        return "Autó módosítás";
       }
-    }
-  }
+    },
+  },
 };
 </script>
 
