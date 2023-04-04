@@ -4,7 +4,7 @@
     <h1>Taxi kezelés</h1>
 
     <!--#region táblázat -->
-    <table class="table table-bordered w-auto">
+    <table class="table table-bordered w-auto table-hover">
       <thead>
         <tr>
           <th>
@@ -26,7 +26,12 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="(car, index) in carsWithDrivers" :key="`car${index}`">
+        <tr
+          v-for="(car, index) in carsWithDrivers"
+          :key="`car${index}`"
+          @click="onClickRow(car.id)"
+          :class="currentRowBackground(car.id)"
+        >
           <td>
             <!-- törlés delete -->
             <button
@@ -40,7 +45,7 @@
             <button
               type="button"
               class="btn btn-outline-primary btn-sm ms-2"
-              @click="onClickEdit()"
+              @click="onClickEdit(car.id)"
               data-bs-target="#carModal"
             >
               <i class="bi bi-pencil-fill"></i>
@@ -95,7 +100,13 @@
               <!-- name -->
               <div class="mb-3 col-md-12">
                 <label for="name" class="form-label">Autó neve</label>
-                <input type="text" class="form-control" id="name" required />
+                <input
+                  type="text"
+                  class="form-control"
+                  id="name"
+                  required
+                  v-model="editableCar.name"
+                />
                 <div class="invalid-feedback">Az autó kitöltése kötelező</div>
               </div>
               <!-- licenceNumber -->
@@ -106,6 +117,7 @@
                   class="form-control"
                   id="licenceNumber"
                   required
+                  v-model="editableCar.licenceNumber"
                 />
                 <div class="invalid-feedback">
                   Az rendszám kitöltése kötelező
@@ -119,6 +131,7 @@
                   class="form-control"
                   id="hourlyRate"
                   required
+                  v-model="editableCar.hourlyRate"
                 />
                 <div class="invalid-feedback">Az óradíj kitöltése kötelező</div>
               </div>
@@ -131,6 +144,7 @@
                       type="checkbox"
                       value=""
                       id="outOfTraffic"
+                      v-model="editableCar.outOfTraffic"
                     />
                     <label class="form-check-label" for="outOfTraffic">
                       Forgalmon kívül
@@ -140,9 +154,18 @@
                 <!-- drivers  -->
                 <div class="col-md-8 d-flex align-items-center">
                   <label for="driverId" class="form-label m-0">Sofőr:</label>
-                  <select class="form-select ms-2" id="driverId">
-                    <option v-for="(driver, index) in driversAbc" :key="`driver${index}`"
-                    :value="driver.id">{{driver.driverName}}</option>
+                  <select
+                    class="form-select ms-2"
+                    id="driverId"
+                    v-model="editableCar.driverId"
+                  >
+                    <option
+                      v-for="(driver, index) in driversAbc"
+                      :key="`driver${index}`"
+                      :value="driver.id"
+                    >
+                      {{ driver.driverName }}
+                    </option>
                   </select>
                 </div>
               </div>
@@ -160,9 +183,9 @@
             <button
               type="button"
               class="btn btn-primary"
-              @click="onClickCancel()"
+              @click="onClickSave()"
             >
-              Save changes
+              Mentés
             </button>
           </div>
         </div>
@@ -230,7 +253,21 @@ export default {
       const data = await response.json();
       this.carsWithDrivers = data.data;
       this.state = "view";
+      this.editableCar = new Car();
     },
+    async getCarById(id) {
+      let url = `${this.storeUrl.urlCars}/${id}`;
+      const config = {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${this.storeLogin.accessToken}`,
+        },
+      };
+      const response = await fetch(url, config);
+      const data = await response.json();
+      this.editableCar = data.data;
+    },
+
     async getDriversAbc() {
       let url = this.storeUrl.urlDriversAbc;
       const config = {
@@ -242,15 +279,46 @@ export default {
       const response = await fetch(url, config);
       const data = await response.json();
       this.driversAbc = data.data;
-
+    },
+    async postCar() {
+      let url = this.storeUrl.urlCars;
+      const body = JSON.stringify(this.editableCar);
+      const config = {
+        method: "POST",
+        headers: {
+          "content-type": "application/json",
+          Authorization: `Bearer ${this.storeLogin.accessToken}`,
+        },
+        body: body,
+      };
+      const response = await fetch(url, config);
+      this.getCarsWithDrivers();
+    },
+    async putCar() {
+      const id = this.editableCar.id;
+      let url = `${this.storeUrl.urlCars}/${id}`;
+      const body = JSON.stringify(this.editableCar);
+      const config = {
+        method: "PUT",
+        headers: {
+          "content-type": "application/json",
+          Authorization: `Bearer ${this.storeLogin.accessToken}`,
+        },
+        body: body,
+      };
+      const response = await fetch(url, config);
+      this.getCarsWithDrivers();
     },
 
     onClickNew() {
       this.state = "new";
+      this.editableCar = new Car();
+      this.getDriversAbc();
       this.carModal.show();
     },
-    onClickEdit() {
+    onClickEdit(id) {
       this.state = "edit";
+      this.getCarById(id);
       this.carModal.show();
     },
     onClickDelete() {
@@ -258,6 +326,21 @@ export default {
     },
     onClickCancel() {
       this.carModal.hide();
+    },
+    onClickSave() {
+      if (this.state == "new") {
+        this.postCar();
+      } else if (this.state == "edit") {
+        this.putCar();
+      }
+      
+      this.carModal.hide();
+    },
+    onClickRow(id) {
+      this.currentId = id;
+    },
+    currentRowBackground(id) {
+      return this.currentId == id ? "my-bg-current-row" : "";
     },
   },
   computed: {
@@ -274,4 +357,7 @@ export default {
 
 
 <style>
+.my-bg-current-row {
+  background-color: lightgray;
+}
 </style>
