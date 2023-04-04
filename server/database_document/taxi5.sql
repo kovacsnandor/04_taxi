@@ -129,11 +129,11 @@ INSERT cars
 
 # car módosítás
 UPDATE cars SET
-  name = 'Toyota',
+  name = 'Toyota99',
   licenceNumber = 'TT-111',
   hourlyRate = 2658,
   outOfTraffic = true,
-  driverId = 10
+  driverId = null
   WHERE id = 10;
 
 # adott kocsi trips-jei
@@ -175,4 +175,23 @@ UNION all
 select c.id, c.name, c.licenceNumber, c.hourlyRate, 
   IF(c.outOfTraffic, 'true', 'false') outOfTraffic,
   c.driverId, d.driverName from cars c
-  inner join drivers d on d.id = c.driverId;
+  left join drivers d on d.id = c.driverId;
+
+
+# MInden sofõr
+# driversAbc
+SELECT * FROM drivers
+ORDER BY driverName;
+
+# Azok a kik kocsikban ülnek
+SELECT * FROM drivers d
+  INNER join cars c on d.id = c.driverId
+  ORDER BY driverName;
+
+
+# Azok a kik nem ünek kocsikban
+# driversFreAbc
+SELECT d.id, d.driverName FROM drivers d
+  left join cars c on d.id = c.driverId
+  WHERE c.driverId is NULL
+  ORDER BY driverName;
