@@ -141,8 +141,8 @@
                 <div class="col-md-8 d-flex align-items-center">
                   <label for="driverId" class="form-label m-0">Sofőr:</label>
                   <select class="form-select ms-2" id="driverId">
-                    <option value="">név1</option>
-                    <option>név2</option>
+                    <option v-for="(driver, index) in driversAbc" :key="`driver${index}`"
+                    :value="driver.id">{{driver.driverName}}</option>
                   </select>
                 </div>
               </div>
@@ -212,6 +212,7 @@ export default {
   },
   mounted() {
     this.getCarsWithDrivers();
+    this.getDriversAbc();
     this.carModal = new bootstrap.Modal(document.getElementById("carModal"), {
       keyboard: false,
     });
@@ -230,6 +231,20 @@ export default {
       this.carsWithDrivers = data.data;
       this.state = "view";
     },
+    async getDriversAbc() {
+      let url = this.storeUrl.urlDriversAbc;
+      const config = {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${this.storeLogin.accessToken}`,
+        },
+      };
+      const response = await fetch(url, config);
+      const data = await response.json();
+      this.driversAbc = data.data;
+
+    },
+
     onClickNew() {
       this.state = "new";
       this.carModal.show();
