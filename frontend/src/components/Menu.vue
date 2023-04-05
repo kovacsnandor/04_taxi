@@ -41,19 +41,21 @@
               </li>
               <li>
                 <router-link class="dropdown-item" to="/taxiKezeles"
+                :class="{ disabled: !storeLogin.loginSuccess }"
                   >Taxi kezelés</router-link
                 >
               </li>
               <li><hr class="dropdown-divider" /></li>
               <li>
                 <router-link class="dropdown-item" to="/fuvarBevitel"
+                :class="{ disabled: !storeLogin.loginSuccess }"
                   >Fuvar bevitel</router-link
                 >
               </li>
             </ul>
           </li>
           <li class="nav-item">
-            <router-link class="nav-link disabled" to="/count1"
+            <router-link class="nav-link" to="/count1"
               >Counter1</router-link
             >
           </li>
